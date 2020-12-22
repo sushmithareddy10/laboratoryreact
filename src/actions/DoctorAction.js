@@ -16,12 +16,31 @@ export const addDoctor = (doctor,history) => async (dispatch) => {
 
 export const getDoctors = () => async (dispatch) => {
     const res = await axios.get("http://localhost:8080/api/doctors/all");
-    console.log(res);
+    fetch(res).then(response => {
+        if(response.ok) {
+            return response;
+        }
+        else{
+            var error = new Error('Error' + response.status+ ' ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmsg = new Error(error.message);
+        throw errmsg;
+    })
     dispatch({
         type: GET_DOCTORS,
         payload: res.data,
-    });
+    })
+    .catch(error => dispatch(getDoctorError(error.message)));
 };
+
+export const getDoctorError = (errmsg) => ({
+    type: GET_ERRORS,
+    payload: errmsg
+})
 
 export const deleteDoctor = (id) => async (dispatch) => {
     if(window.confirm("Are you sure ? This will delete the Doctor details")) {
@@ -35,8 +54,8 @@ export const deleteDoctor = (id) => async (dispatch) => {
 };
 
 
-    export const updateDoctor=(id,history)=>async dispatch=>{
-        const res=await axios.put(`http://localhost:8080/api/doctors/${id}`);
+    export const getDoctor=(id,history)=>async dispatch=>{
+        const res=await axios.get(`http://localhost:8080/api/doctors/${id}`);
         dispatch({
             type:GET_DOCTOR,
             payload:res.data

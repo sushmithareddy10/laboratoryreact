@@ -30,19 +30,19 @@
   text-decoration: none;
   color: #000;
 }
-
-.main-pag {
+.doctorList .container .search{
+  float: right;
+}
+.main-page {
   margin-top: 10px;
 }
-.main-page .container .row .col .doctor-button {
- display: inline;
- padding: 0px 5px;
-}
+
 .footer {
   background-color: grey;
-  position:absolute;
+  position: absolute;
   bottom:0;
   width:100%;
+  clear: both;
 }
 .footer p {
   padding: 15px 0px;

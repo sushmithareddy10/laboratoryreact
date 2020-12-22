@@ -15,6 +15,8 @@ class MainPageComponent extends React.Component {
         <HeaderComponent />
            <div className="main-page">
               <div className="row">
+              <div className="col-1">
+                 </div>
                  <div className="col-2">
                  <Link to="/add-doctor" className="btn btn-lg btn-info addButton">Add Doctor</Link>
                  </div>

@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addDoctor, updateDoctor, getDoctors } from "../../actions/DoctorAction";
+import { addDoctor, getDoctor } from "../../actions/DoctorAction";
 class UpdateDoctor extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      doctorId: this.doctorId,
+      doctorId: "",
       doctorName: "",
       doctorSpecialization: "",
       doctorPhoneNumber: "",
@@ -35,7 +35,7 @@ class UpdateDoctor extends React.Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     console.log(id);
-    this.props.updateDoctor(id, this.props.history);
+    this.props.getDoctor(id, this.props.history);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -137,11 +137,11 @@ class UpdateDoctor extends React.Component {
 
 UpdateDoctor.propTypes = {
   addDoctor: PropTypes.func.isRequired,
-  getDoctors: PropTypes.func.isRequired,
+  getDoctor: PropTypes.func.isRequired,
   doctor: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   doctor: state.doctors.doctor,
 });
-export default connect(mapStateToProps, { addDoctor, updateDoctor, getDoctors })(UpdateDoctor);
+export default connect(mapStateToProps, { addDoctor,  getDoctor })(UpdateDoctor);
