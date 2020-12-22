@@ -1,4 +1,4 @@
-import {GET_DOCTORS} from '../actions/type';
+import {DELETE_DOCTOR, GET_DOCTORS} from '../actions/type';
 
 const initialState = {
     doctors: [],
@@ -11,6 +11,13 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 doctors: action.payload,
+            }
+        case DELETE_DOCTOR:
+            return {
+                ...state,
+                doctors: state.doctors.filter(
+                    doctor => doctor.doctorId!==action.payload
+                )
             };
         default:
             return state;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {GET_DOCTORS, GET_ERRORS} from "./type";
+import {DELETE_DOCTOR, GET_DOCTOR, GET_DOCTORS, GET_ERRORS} from "./type";
 export const addDoctor = (doctor,history) => async (dispatch) => {
     let res ={};
     try {
@@ -22,3 +22,23 @@ export const getDoctors = () => async (dispatch) => {
         payload: res.data,
     });
 };
+
+export const deleteDoctor = (id) => async (dispatch) => {
+    if(window.confirm("Are you sure ? This will delete the Doctor details")) {
+        const res = await axios.delete(`http://localhost:8080/api/doctors/delete/${id}`);
+        console.log(res);
+        dispatch({
+            type:DELETE_DOCTOR,
+            payload:id
+        });
+    }
+};
+
+
+    export const updateDoctor=(id,history)=>async dispatch=>{
+        const res=await axios.put(`http://localhost:8080/api/doctors/${id}`);
+        dispatch({
+            type:GET_DOCTOR,
+            payload:res.data
+        });
+    };

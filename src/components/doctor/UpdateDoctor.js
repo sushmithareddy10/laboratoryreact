@@ -1,26 +1,18 @@
 import React from "react";
-import PropTypes from "prop-types";
-import classnames from "classnames";
 import { connect } from "react-redux";
-import { addDoctor } from "../../actions/DoctorAction";
-class AddDoctor extends React.Component {
+import PropTypes from "prop-types";
+import { addDoctor, updateDoctor, getDoctors } from "../../actions/DoctorAction";
+class UpdateDoctor extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      doctorId: "",
+      doctorId: this.doctorId,
       doctorName: "",
       doctorSpecialization: "",
       doctorPhoneNumber: "",
       doctorEmail: "",
-      errors: {},
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log("--------componentWillReceiveProps : Called----------");
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
   }
 
   onChange = (event) => {
@@ -40,50 +32,63 @@ class AddDoctor extends React.Component {
     this.props.addDoctor(newDoctor, this.props.history);
   };
 
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    console.log(id);
+    this.props.updateDoctor(id, this.props.history);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      doctorId,
+      doctorName,
+      doctorSpecialization,
+      doctorPhoneNumber,
+      doctorEmail,
+    } = nextProps.doctor;
+
+    this.setState({
+      doctorId,
+      doctorName,
+      doctorSpecialization,
+      doctorPhoneNumber,
+      doctorEmail,
+    });
+  }
+
   render() {
-    const { errors } = this.state;
     return (
       <div className="doctor">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h5 className="text-center">Add Doctor Form</h5>
+              <h5 className="display-4 text-center">Update Doctor Form</h5>
               <hr />
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg",{"is-invalid":errors.doctorId})}
+                    className="form-control form-control-lg "
                     placeholder="doctor Id"
                     name="doctorId"
                     onChange={this.onChange}
                     value={this.state.doctorId}
                   />
-                  {errors.doctorId && (
-                    <div className="invalid-feedback">
-                        {errors.doctorId}
-                    </div>
-                )}
                 </div>
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg",{"is-invalid":errors.doctorName})}
+                    className="form-control form-control-lg"
                     placeholder="Doctor Name"
                     name="doctorName"
                     onChange={this.onChange}
                     value={this.state.doctorName}
                   />
-                  {errors.doctorName && (
-                    <div className="invalid-feedback">
-                        {errors.doctorName}
-                    </div>
-                )}
                 </div>
 
                 <div className="form-group">
                   <select
-                    className={classnames("form-control form-control-lg",{"is-invalid":errors.doctorSpecialization})}
+                    className="form-control form-control-lg"
                     name="doctorSpecialization"
                     value={this.state.doctorSpecialization}
                     onChange={this.onChange}
@@ -94,42 +99,27 @@ class AddDoctor extends React.Component {
                     <option value="Skin">Skin</option>
                     <option value="Hair">Hair</option>
                   </select>
-                  {errors.doctorSpecialization && (
-                    <div className="invalid-feedback">
-                        {errors.doctorSpecialization}
-                    </div>
-                )}
                 </div>
 
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg",{"is-invalid":errors.doctorPhoneNumber})}
+                    className="form-control form-control-lg"
                     placeholder="Doctor Number"
                     name="doctorPhoneNumber"
                     onChange={this.onChange}
                     value={this.state.doctorPhoneNumber}
                   />
-                  {errors.doctorPhoneNumber && (
-                    <div className="invalid-feedback">
-                        {errors.doctorPhoneNumber}
-                    </div>
-                )}
                 </div>
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg",{"is-invalid":errors.doctorEmail})}
+                    className="form-control form-control-lg"
                     placeholder="Doctor Email"
                     name="doctorEmail"
                     onChange={this.onChange}
                     value={this.state.doctorEmail}
                   />
-                  {errors.doctorEmail && (
-                    <div className="invalid-feedback">
-                        {errors.doctorEmail}
-                    </div>
-                )}
                 </div>
 
                 <input
@@ -145,11 +135,13 @@ class AddDoctor extends React.Component {
   }
 }
 
-AddDoctor.propTypes = {
+UpdateDoctor.propTypes = {
   addDoctor: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
+  getDoctors: PropTypes.func.isRequired,
+  doctor: PropTypes.object.isRequired,
 };
+
 const mapStateToProps = (state) => ({
-  errors: state.errors,
+  doctor: state.doctors.doctor,
 });
-export default connect(mapStateToProps, { addDoctor })(AddDoctor);
+export default connect(mapStateToProps, { addDoctor, updateDoctor, getDoctors })(UpdateDoctor);
